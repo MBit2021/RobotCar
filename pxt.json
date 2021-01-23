@@ -4,9 +4,9 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "radio": "*",
         "microphone": "*",
-        "osoyoo": "github:osoyoo/osoyoo-micro-bit-car#52a1b1805866f440fd9b8521bdba4ffdbe741ced"
+        "osoyoo": "github:osoyoo/osoyoo-micro-bit-car#52a1b1805866f440fd9b8521bdba4ffdbe741ced",
+        "bluetooth": "*"
     },
     "files": [
         "README.md",
