@@ -9,15 +9,41 @@ function InitDriveProfile () {
     gear_speed_R = 50
     sonar_alarm = 50
     sonar_warn = 100
-    beam_enable = 0
-    beam_color_L = 0
-    beam_color_R = 0
-    remote_ired_enable = 1
 }
-let remote_ired_enable = 0
-let beam_color_R = 0
-let beam_color_L = 0
-let beam_enable = 0
+function EnableBeam (on: number) {
+    if (true) {
+        OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.White)
+    } else {
+        OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.OFF)
+    }
+}
+bluetooth.onBluetoothConnected(function () {
+    basic.showLeds(`
+        # . # . #
+        # . # . #
+        . # # # .
+        . . # . .
+        . . # . .
+        `)
+})
+bluetooth.onBluetoothDisconnected(function () {
+    basic.clearScreen()
+})
+function EnableRemoteIR (on: number) {
+    if (on != 0) {
+        OSOYOO_IR_BLACK.init(Pins.P8)
+        basic.showLeds(`
+            # # # # #
+            . . . . .
+            . # # # .
+            . . . . .
+            . . # . .
+            `)
+    } else {
+        OSOYOO_IR_BLACK.init(Pins.P0)
+        basic.clearScreen()
+    }
+}
 let sonar_warn = 0
 let sonar_alarm = 0
 let gear_speed_R = 0
@@ -28,7 +54,6 @@ let gear_shirttime = 0
 let drive_turntime = 0
 let drive_status = 0
 let drive_mode = 0
+basic.clearScreen()
 InitDriveProfile()
-basic.forever(function () {
-	
-})
+EnableRemoteIR(1)
