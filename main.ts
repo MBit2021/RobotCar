@@ -11,7 +11,7 @@ function InitDriveProfile () {
     sonar_warn = 100
 }
 function EnableBeam (on: number) {
-    if (true) {
+    if (on != 0) {
         OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.White)
     } else {
         OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.OFF)
