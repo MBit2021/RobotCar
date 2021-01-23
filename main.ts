@@ -9,6 +9,7 @@ function InitDriveProfile () {
     gear_speed_R = 50
     sonar_alarm = 50
     sonar_warn = 100
+    sonar_enable = 0
 }
 function EnableBeam (on: number) {
     if (on != 0) {
@@ -44,6 +45,16 @@ function EnableRemoteIR (on: number) {
         basic.clearScreen()
     }
 }
+function DriveForward () {
+	
+}
+OSOYOO_IR_BLACK.onPressEvent(RemoteButton.NUM0, function () {
+    drive_mode += 0
+})
+OSOYOO_IR_BLACK.onPressEvent(RemoteButton.NUM1, function () {
+    drive_mode += 1
+})
+let sonar_enable = 0
 let sonar_warn = 0
 let sonar_alarm = 0
 let gear_speed_R = 0
