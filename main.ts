@@ -1,5 +1,6 @@
 function InitDriveProfile () {
     drive_mode = 0
+    drive_gear = 0
     drive_status = 0
     drive_turntime = 200
     gear_shirttime = 300
@@ -10,6 +11,7 @@ function InitDriveProfile () {
     sonar_alarm = 50
     sonar_warn = 100
     sonar_enable = 0
+    system_idle_time = 100
 }
 function EnableBeam (on: number) {
     if (on != 0) {
@@ -17,6 +19,9 @@ function EnableBeam (on: number) {
     } else {
         OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.OFF)
     }
+}
+function TurnLeft () {
+	
 }
 bluetooth.onBluetoothConnected(function () {
     basic.showLeds(`
@@ -51,9 +56,19 @@ function DriveForward () {
 OSOYOO_IR_BLACK.onPressEvent(RemoteButton.NUM0, function () {
     drive_mode += 0
 })
+function ShiftGear () {
+	
+}
+function TurnRight () {
+	
+}
 OSOYOO_IR_BLACK.onPressEvent(RemoteButton.NUM1, function () {
     drive_mode += 1
 })
+function DriveReverse () {
+	
+}
+let system_idle_time = 0
 let sonar_enable = 0
 let sonar_warn = 0
 let sonar_alarm = 0
@@ -64,6 +79,7 @@ let gear_speed_1 = 0
 let gear_shirttime = 0
 let drive_turntime = 0
 let drive_status = 0
+let drive_gear = 0
 let drive_mode = 0
 basic.clearScreen()
 InitDriveProfile()
