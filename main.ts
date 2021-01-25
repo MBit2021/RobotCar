@@ -8,7 +8,7 @@ function InitDriveProfile () {
     sonar_warn = 100
     sonar_enable = 0
     system_idle_time = 100
-    gear_speed = [50, 150, 250, 100]
+    gear_speed = [80, 150, 250, 100]
 }
 function EnableBeam (on: number) {
     if (on != 0) {
@@ -51,11 +51,9 @@ function EnableRemoteIR (on: number) {
     }
 }
 function DriveForward () {
-    if (drive_gear > 0 && drive_gear < 4) {
+    if (drive_gear < 3) {
+        drive_gear += drive_gear + 1
         OSOYOO_Robot.CarCtrlSpeed(OSOYOO_Robot.CarState.Car_Run, gear_speed[drive_gear])
-        if (drive_gear < 3) {
-            drive_gear += drive_gear + 1
-        }
         basic.pause(gear_shirttime)
     }
 }
