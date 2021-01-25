@@ -42,8 +42,16 @@ function DriveTurn (rturn: number, keepmove: number) {
         OSOYOO_Robot.CarCtrlSpeed(OSOYOO_Robot.CarState.Car_SpinLeft, rotate_speed[0])
     }
     basic.pause(drive_rotatetime)
-    if (true) {
-    	
+    if (keepmove == 1) {
+        if (drive_status == 1) {
+            DriveForward()
+        } else if (drive_status == 4) {
+            DriveReverse()
+        } else {
+            StopDrive()
+        }
+    } else {
+        StopDrive()
     }
 }
 function EnableRemoteIR (on: number) {
