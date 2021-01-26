@@ -6,8 +6,8 @@ function InitDriveProfile () {
     gear_shifttime = 300
     rotate_speed = [180, 180]
     gear_speed = [80, 150, 250, 100]
-    sonar_alarm = 50
-    sonar_warn = 100
+    sonar_alarm = 10
+    sonar_warn = 20
     sonar_enable = 0
     system_idle_time = 100
 }
@@ -18,6 +18,9 @@ function EnableBeam (on: number) {
         OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.OFF)
     }
 }
+OSOYOO_IR_BLACK.onPressEvent(RemoteButton.OK, function () {
+    StopDrive()
+})
 bluetooth.onBluetoothConnected(function () {
     basic.showLeds(`
         # . # . #
@@ -54,6 +57,12 @@ function DriveTurn (rturn: number, keepmove: number) {
         StopDrive()
     }
 }
+OSOYOO_IR_BLACK.onPressEvent(RemoteButton.UP, function () {
+    DriveForward()
+})
+OSOYOO_IR_BLACK.onPressEvent(RemoteButton.RIGHT, function () {
+    DriveTurn(1, 1)
+})
 function EnableRemoteIR (on: number) {
     if (on != 0) {
         OSOYOO_IR_BLACK.init(Pins.P8)
@@ -88,11 +97,17 @@ function ManageDrive (tgtsts: number) {
 OSOYOO_IR_BLACK.onPressEvent(RemoteButton.NUM0, function () {
     drive_mode += 0
 })
+OSOYOO_IR_BLACK.onPressEvent(RemoteButton.LEFT, function () {
+    DriveTurn(0, 1)
+})
+OSOYOO_IR_BLACK.onPressEvent(RemoteButton.DOWN, function () {
+    DriveReverse()
+})
 OSOYOO_IR_BLACK.onPressEvent(RemoteButton.NUM1, function () {
     drive_mode += 1
 })
 function DriveReverse () {
-    if (drive_status == 1) {
+    if (drive_status != 1) {
         StopDrive()
     }
     drive_gear += 4
