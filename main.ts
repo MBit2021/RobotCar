@@ -2,6 +2,7 @@ function InitDriveProfile () {
     drive_mode = 0
     drive_gear = 0
     drive_status = 0
+    beam_enable = 1
     rotate_time = 300
     gear_shifttime = 300
     rotate_speed = [180, 180]
@@ -12,7 +13,7 @@ function InitDriveProfile () {
     system_idle_time = 100
 }
 function EnableBeam (on: number) {
-    if (on != 0) {
+    if (on != 1) {
         OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.White)
     } else {
         OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.OFF)
@@ -38,6 +39,15 @@ function StopDrive () {
     drive_gear += 0
     drive_status += 0
 }
+OSOYOO_IR_BLACK.onPressEvent(RemoteButton.STAR, function () {
+    if (beam_enable == 1) {
+        EnableBeam(1)
+        beam_enable += 0
+    } else {
+        EnableBeam(0)
+        beam_enable += 1
+    }
+})
 OSOYOO_IR_BLACK.onPressEvent(RemoteButton.UP, function () {
     DriveForward()
 })
@@ -127,6 +137,7 @@ let gear_speed: number[] = []
 let rotate_speed: number[] = []
 let gear_shifttime = 0
 let rotate_time = 0
+let beam_enable = 0
 let drive_status = 0
 let drive_gear = 0
 let drive_mode = 0
