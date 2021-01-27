@@ -25,7 +25,7 @@ function EnableStopLight (enable: boolean) {
         OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.OFF)
     }
 }
-let list = 0
+let stub = 0
 let system_idle_time = 0
 let sonar_enable = 0
 let sonar_warn = 0
@@ -40,7 +40,7 @@ let drive_mode = 0
 basic.showIcon(IconNames.Rollerskate)
 InitDriveProfile()
 basic.forever(function () {
-    list += OSOYOO_Sensor.Ultrasonic(DigitalPin.P15, DigitalPin.P14)
+    stub += OSOYOO_Sensor.Ultrasonic(DigitalPin.P15, DigitalPin.P14)
     if (OSOYOO_Sensor.Ultrasonic(DigitalPin.P14, DigitalPin.P15) <= 15) {
         basic.showIcon(IconNames.No)
         drive_mode += 4
