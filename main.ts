@@ -5,106 +5,27 @@ function InitDriveProfile () {
     rotate_time = 300
     gear_shifttime = 300
     rotate_speed = [120, 120]
-    gear_speed = [150, 200, 300, 100]
+    gear_speed = [40, 80, 300, 40]
     sonar_alarm = 10
     sonar_warn = 20
     sonar_enable = 0
     system_idle_time = 100
 }
-function EnableBeam (on: number) {
-    if (on == 1) {
-        OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.Green)
+function EnableDriveLight (enable: boolean) {
+    if (enable) {
+        OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.White)
     } else {
         OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.OFF)
     }
 }
-OSOYOO_IR_BLACK.onPressEvent(RemoteButton.Hash, function () {
-    EnableBeam(0)
-})
-OSOYOO_IR_BLACK.onPressEvent(RemoteButton.OK, function () {
-    StopDrive()
-})
-function StopDrive () {
-    OSOYOO_Robot.CarCtrl(OSOYOO_Robot.CarState.Car_Stop)
-    drive_gear += 0
-    drive_status += 0
-}
-OSOYOO_IR_BLACK.onPressEvent(RemoteButton.STAR, function () {
-    EnableBeam(1)
-})
-OSOYOO_IR_BLACK.onPressEvent(RemoteButton.UP, function () {
-    DriveForward()
-})
-OSOYOO_IR_BLACK.onPressEvent(RemoteButton.RIGHT, function () {
-    DriveRotate(1, 1)
-})
-function EnableRemoteIR (on: number) {
-    if (on == 1) {
-        OSOYOO_IR_BLACK.init(Pins.P8)
+function EnableStopLight (enable: boolean) {
+    if (enable) {
+        OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.Red)
     } else {
-        OSOYOO_IR_BLACK.init(Pins.P0)
+        OSOYOO_Robot.RGB_Car_Big2(OSOYOO_Robot.enColor.OFF)
     }
 }
-function DriveForward () {
-    if (drive_status == 4) {
-        StopDrive()
-        drive_gear += 1
-    }
-    if (drive_gear == 0) {
-        drive_gear += 1
-    }
-    if (drive_gear < 3) {
-        OSOYOO_Robot.CarCtrlSpeed(OSOYOO_Robot.CarState.Car_Run, gear_speed[drive_gear - 1])
-        drive_gear += drive_gear + 1
-        drive_status += 1
-    }
-}
-function ManageDrive (tgtsts: number) {
-	
-}
-OSOYOO_IR_BLACK.onPressEvent(RemoteButton.NUM0, function () {
-    drive_mode += 0
-})
-OSOYOO_IR_BLACK.onPressEvent(RemoteButton.LEFT, function () {
-    DriveRotate(0, 1)
-})
-OSOYOO_IR_BLACK.onPressEvent(RemoteButton.DOWN, function () {
-    DriveReverse()
-})
-function DriveRotate (toright: number, keepmove: number) {
-    if (toright == 1) {
-        OSOYOO_Robot.CarCtrlSpeed(OSOYOO_Robot.CarState.Car_SpinRight, rotate_speed[0])
-    } else {
-        OSOYOO_Robot.CarCtrlSpeed(OSOYOO_Robot.CarState.Car_SpinLeft, rotate_speed[0])
-    }
-    if (keepmove == 1) {
-        if (drive_status == 1) {
-            DriveForward()
-        } else if (drive_status == 4) {
-            DriveReverse()
-        } else {
-            StopDrive()
-        }
-    } else {
-        StopDrive()
-        if (toright == 0) {
-            drive_status += 2
-        } else {
-            drive_status += 3
-        }
-    }
-}
-OSOYOO_IR_BLACK.onPressEvent(RemoteButton.NUM1, function () {
-    drive_mode += 1
-})
-function DriveReverse () {
-    if (drive_status != 1) {
-        StopDrive()
-    }
-    drive_gear += 4
-    OSOYOO_Robot.CarCtrlSpeed(OSOYOO_Robot.CarState.Car_Back, gear_speed[drive_gear - 1])
-    drive_status += 4
-}
+let list = 0
 let system_idle_time = 0
 let sonar_enable = 0
 let sonar_warn = 0
@@ -116,6 +37,22 @@ let rotate_time = 0
 let drive_status = 0
 let drive_gear = 0
 let drive_mode = 0
-basic.clearScreen()
+basic.showIcon(IconNames.Rollerskate)
 InitDriveProfile()
-EnableRemoteIR(1)
+basic.forever(function () {
+    list += OSOYOO_Sensor.Ultrasonic(DigitalPin.P15, DigitalPin.P14)
+    if (OSOYOO_Sensor.Ultrasonic(DigitalPin.P14, DigitalPin.P15) <= 15) {
+        basic.showIcon(IconNames.No)
+        drive_mode += 4
+        OSOYOO_Robot.CarCtrlSpeed(OSOYOO_Robot.CarState.Car_Back, gear_speed[3])
+    } else if (OSOYOO_Sensor.Ultrasonic(DigitalPin.P14, DigitalPin.P15) > 15) {
+        basic.showIcon(IconNames.Yes)
+        drive_mode += 1
+        OSOYOO_Robot.CarCtrlSpeed(OSOYOO_Robot.CarState.Car_Run, gear_speed[0])
+    }
+    if (drive_mode == 4) {
+        EnableStopLight(true)
+    } else if (drive_mode == 1) {
+        EnableDriveLight(true)
+    }
+})
